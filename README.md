@@ -4,4 +4,7 @@ The dataset contains 50,000 student records with logically connected academic, t
 ## Columns 
 Student_ID, Age, Gender, Degree, Branch, CGPA, Internships, Projects, Coding_Skills, Communication_Skills. Aptitude_Test_Score, Soft_Skills_Rating, Certifications, Backlogs, Placement_Status
 
+## 🎯 Problem Statement
+Given a student’s academic performance, technical skills, aptitude, internships, and soft skills, predict whether the student will be Placed or Not Placed during campus placements.
+
 ## Target Feature :- Placement_Status

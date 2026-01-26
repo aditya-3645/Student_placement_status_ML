@@ -3,3 +3,5 @@ The dataset contains 50,000 student records with logically connected academic, t
 
 ## Columns 
 Student_ID, Age, Gender, Degree, Branch, CGPA, Internships, Projects, Coding_Skills, Communication_Skills. Aptitude_Test_Score, Soft_Skills_Rating, Certifications, Backlogs, Placement_Status
+
+## ** Target Feature ** :- Placement_Status

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Placement Predictor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background: white;
+    padding: 35px;
+    border-radius: 18px;
+    width: 100%;
+    max-width: 680px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+}
+
+h1 {
+    text-align: center;
+    color: #667eea;
+}
+
+.subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: 600;
+    margin-top: 12px;
+    display: block;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1.8px solid #ddd;
+    margin-top: 5px;
+}
+
+button {
+    margin-top: 22px;
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    background: linear-gradient(135deg,#667eea,#764ba2);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.result {
+    display: none;
+    margin-top: 25px;
+    padding: 20px;
+    border-radius: 14px;
+    background: #f3f4ff;
+}
+
+.result h2 {
+    color: #764ba2;
+}
+
+ul {
+    margin-top: 10px;
+    padding-left: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>🎓 Student Placement Predictor</h1>
+<p class="subtitle">ML-based placement analysis with improvement guidance</p>
+
+<label>Age</label>
+<input type="number" id="age">
+
+<label>Gender</label>
+<select id="gender">
+    <option value="0">Male</option>
+    <option value="1">Female</option>
+</select>
+
+<label>Degree</label>
+<select id="degree">
+    <option value="Other">Other</option>
+    <option value="B.Tech">B.Tech</option>
+    <option value="BCA">BCA</option>
+    <option value="MCA">MCA</option>
+</select>
+
+<label>Branch</label>
+<select id="branch">
+    <option value="Other">Other</option>
+    <option value="Civil">Civil</option>
+    <option value="ECE">ECE</option>
+    <option value="IT">IT</option>
+    <option value="ME">Mechanical</option>
+</select>
+
+<label>CGPA</label>
+<input type="number" step="0.01" id="cgpa">
+
+<label>Internships</label>
+<input type="number" id="internships">
+
+<label>Projects</label>
+<input type="number" id="projects">
+
+<label>Coding Skills (1–10)</label>
+<input type="number" min="1" max="10" id="coding">
+
+<label>Communication Skills (1–10)</label>
+<input type="number" min="1" max="10" id="communication">
+
+<label>Aptitude Score (0–100)</label>
+<input type="number" id="aptitude">
+
+<label>Soft Skills (1–10)</label>
+<input type="number" min="1" max="10" id="softskills">
+
+<label>Certifications</label>
+<input type="number" id="certifications">
+
+<label>Backlogs</label>
+<input type="number" id="backlogs">
+
+<button onclick="predict()">Analyze Placement</button>
+
+<div class="result" id="result">
+    <h2 id="decision"></h2>
+    <p id="probability"></p>
+    <div id="feedback"></div>
+</div>
+</div>
+
+<script>
+// ================= MODEL =================
+const intercept = -1.370677357612448;
+
+const weights = {
+  Degree_BTech: -0.3007200834203382,
+  Degree_BCA: -0.329134655509097,
+  Degree_MCA: -0.21870943144928945,
+  Branch_Civil: -0.22430099199400685,
+  Branch_ECE: 0.06936996358170752,
+  Branch_IT: -0.08735786590593998,
+  Branch_ME: -0.027295084897283092,
+  Age: -0.21804572397219366,
+  Gender: -0.08811856116453229,
+  CGPA: -0.3578331268912412,
+  Internships: 0.2750440210592294,
+  Projects: 0.76776325471668,
+  Coding_Skills: -0.2023111084659517,
+  Communication_Skills: 0.8509704842297466,
+  Aptitude_Test_Score: 0.005065700867634463,
+  Soft_Skills_Rating: -0.20657436514602692,
+  Certifications: 1.8711961324439046,
+  Backlogs: -2.0873870440687257
+};
+
+function sigmoid(z) {
+  return 1 / (1 + Math.exp(-z));
+}
+
+function predict() {
+  let z = intercept;
+
+  z += weights.Degree_BTech * (degree.value === "B.Tech");
+  z += weights.Degree_BCA * (degree.value === "BCA");
+  z += weights.Degree_MCA * (degree.value === "MCA");
+
+  z += weights.Branch_Civil * (branch.value === "Civil");
+  z += weights.Branch_ECE * (branch.value === "ECE");
+  z += weights.Branch_IT * (branch.value === "IT");
+  z += weights.Branch_ME * (branch.value === "ME");
+
+  z += weights.Age * age.value;
+  z += weights.Gender * gender.value;
+  z += weights.CGPA * cgpa.value;
+  z += weights.Internships * internships.value;
+  z += weights.Projects * projects.value;
+  z += weights.Coding_Skills * coding.value;
+  z += weights.Communication_Skills * communication.value;
+  z += weights.Aptitude_Test_Score * aptitude.value;
+  z += weights.Soft_Skills_Rating * softskills.value;
+  z += weights.Certifications * certifications.value;
+  z += weights.Backlogs * backlogs.value;
+
+  const prob = sigmoid(z);
+  const percent = (prob * 100).toFixed(2);
+
+  let feedback = [];
+
+  if (cgpa.value < 7.5) feedback.push("Improve CGPA to at least 7.5");
+  if (internships.value < 1) feedback.push("Complete at least 1 internship");
+  if (projects.value < 4) feedback.push("Build at least 4 projects");
+  if (coding.value < 6) feedback.push("Improve coding skills");
+  if (communication.value < 5) feedback.push("Improve communication skills");
+  if (aptitude.value < 80) feedback.push("Score 80+ in aptitude tests");
+  if (certifications.value < 2) feedback.push("Complete at least 2 certifications");
+  if (backlogs.value > 0) feedback.push("Clear all backlogs");
+
+  document.getElementById("result").style.display = "block";
+  document.getElementById("probability").innerText =
+    `Placement Probability: ${percent}%`;
+
+  if (prob >= 0.5) {
+    decision.innerText = "🎉 Good job! Follow the path and keep going!";
+    feedbackDiv.innerHTML = "";
+  } else {
+    decision.innerText = "⚠️ Oops! You lack something!";
+    let list = "<ul>";
+    feedback.forEach(item => list += `<li>${item}</li>`);
+    list += "</ul>";
+    feedbackDiv.innerHTML = list;
+  }
+}
+</script>
+
+</body>
+</html>

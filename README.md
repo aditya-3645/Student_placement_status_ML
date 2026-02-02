@@ -61,8 +61,41 @@ EDA was performed using **Matplotlib, Seaborn, and Plotly** to visualize pattern
 
 ---
 
-## ✅ Conclusion
-The analysis reveals that **technical competence and academic consistency** play a far more important role in campus placements than demographic factors. Students aiming for placements should focus on maintaining a strong CGPA, gaining internships, improving coding skills, building projects, performing well in aptitude tests, earning certifications, and avoiding backlogs.
+## 📊 Model Performance Summary
+
+We trained a **Logistic Regression** model for a **binary classification** problem.  
+The dataset has a **mild class imbalance** (approximately **63% vs 34%**), so no resampling techniques were applied. Instead, appropriate evaluation metrics were used to assess model performance.
+
+---
+
+## 🔹 Evaluation Metrics
+
+The model was evaluated on the test dataset using **Precision, Recall, F1-Score, and Accuracy**.
+
+| Class | Precision | Recall | F1-Score | Support |
+|------|-----------|--------|----------|---------|
+| 0 | 0.88 | 0.88 | 0.88 | 5738 |
+| 1 | 0.79 | 0.79 | 0.79 | 3262 |
+
+- **Overall Accuracy:** 85%  
+- **Macro Average F1-Score:** 0.84  
+- **Weighted Average F1-Score:** 0.85  
+
+---
+
+## 🔹 Interpretation
+
+- The model performs **consistently well across both classes**
+- The **minority class (1)** is handled effectively with a recall of **79%**
+- No significant bias toward the majority class is observed
+- Balanced precision and recall indicate a **stable and reliable classifier**
+
+---
+
+## 🔹 Conclusion
+
+The Logistic Regression model demonstrates **strong baseline performance** without requiring data balancing techniques.  
+With a clean preprocessing pipeline and balanced evaluation metrics, the model is well-suited for further optimization and comparison with more advanced models.
 
 ---
 
